@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+{% block title %}Вход{% endblock %}
+
+{% block content %}
+<div class="card mt-4">
+    <div class="card-body">
+        <h2 class="card-title">Вход</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="form-group form-check">
+                {{ form.remember(class="form-check-input") }}
+                {{ form.remember.label(class="form-check-label") }}
+            </div>
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a class="btn btn-link" href="{{ url_for('auth.reset_request') }}">Забыли пароль?</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

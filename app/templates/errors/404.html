@@ -1,0 +1,10 @@
+{% extends "layouts/base.html" %}
+{% block title %}Ошибка 404{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1 class="display-1">404</h1>
+    <p class="lead">Страница не найдена.</p>
+    <a href="{{ url_for('main.home') }}" class="btn btn-primary">На главную</a>
+</div>
+{% endblock %}
