@@ -7,6 +7,7 @@ from app.utils import send_reset_email
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -21,25 +22,29 @@ def register():
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', title='Регистрация', form=form)
 
+
 @auth_bp.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('profile.user_profile'))  # Перенаправляем на профиль, если пользователь уже аутентифицирован
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('main.home'))
+            # Измените здесь, чтобы перенаправлять на страницу профиля
+            return redirect(next_page) if next_page else redirect(url_for('profile.user_profile'))  # Перенаправляем на профиль
         else:
             flash('Вход не выполнен. Проверьте почту и пароль.', 'danger')
     return render_template('auth/login.html', title='Вход', form=form)
+
 
 @auth_bp.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for('main.home'))
+
 
 @auth_bp.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
@@ -55,6 +60,7 @@ def reset_request():
             flash('Пользователь с таким адресом электронной почты не найден.', 'danger')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', title='Сброс пароля', form=form)
+
 
 @auth_bp.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
