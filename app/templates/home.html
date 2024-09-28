@@ -8,131 +8,122 @@
 </div>
 
 <!-- Карусель с фотографиями курсов -->
-<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{{ url_for('static', filename='images/banner_1.jpg') }}" class="d-block w-100" alt="Курс 1" loading="auto">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Курс 1</h5>
-                <p>Описание курса 1.</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/banner_2.jpg') }}" class="d-block w-100" alt="Курс 2" loading="auto">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Курс 2</h5>
-                <p>Описание курса 2.</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/banner_3.jpg') }}" class="d-block w-100" alt="Курс 3" loading="auto">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Курс 3</h5>
-                <p>Описание курса 3.</p>
-            </div>
-        </div>
+<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for banner in banners %}
+        <button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="true" aria-label="Слайд {{ loop.index }}"></button>
+        {% endfor %}
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev" aria-label="Предыдущий слайд">
+
+    <div class="carousel-inner">
+        {% set banners = [
+            {'img': 'banner_1.jpg', 'title': 'Курс 1', 'desc': 'Описание курса 1'},
+            {'img': 'banner_2.jpg', 'title': 'Курс 2', 'desc': 'Описание курса 2'},
+            {'img': 'banner_3.jpg', 'title': 'Курс 3', 'desc': 'Описание курса 3'}
+        ] %}
+        {% for banner in banners %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <!-- Мобильные устройства загружают уменьшенную версию изображений -->
+            <picture>
+                <source media="(max-width: 576px)" srcset="{{ url_for('static', filename='images/mobile/' ~ banner.img) }}">
+                <source media="(min-width: 577px)" srcset="{{ url_for('static', filename='images/' ~ banner.img) }}">
+                <img src="{{ url_for('static', filename='images/' ~ banner.img) }}" class="d-block w-100" alt="{{ banner.title }}" loading="lazy">
+            </picture>
+            <div class="carousel-caption d-none d-md-block">
+                <h5>{{ banner.title }}</h5>
+                <p>{{ banner.desc }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Предыдущий</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next" aria-label="Следующий слайд">
+    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Следующий</span>
     </button>
 </div>
+
+<!-- Custom CSS -->
+<style>
+    /* Для мобильных устройств изображения могут быть меньше */
+    @media (max-width: 576px) {
+        #courseCarousel img {
+            max-height: 200px;
+            object-fit: cover;
+        }
+    }
+
+    /* Для планшетов */
+    @media (min-width: 577px) and (max-width: 992px) {
+        #courseCarousel img {
+            max-height: 300px;
+            object-fit: cover;
+        }
+    }
+
+    /* Для десктопов */
+    @media (min-width: auto) {
+        #courseCarousel img {
+            max-height: 400px;
+            object-fit: cover;
+        }
+    }
+</style>
+
 
 <!-- Раздел с видео -->
 <div class="mt-5">
     <h2>Наши видео</h2>
     <div class="row">
+        {% for i in range(1, 4) %}
         <div class="col-md-4">
             <div class="video-container">
-                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video1')">
+                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video{{ i }}')">
                     <option selected>Выберите платформу</option>
                     <option value="plvideo">Plvideo</option>
                     <option value="rutube">Rutube</option>
                     <option value="youtube">YouTube</option>
                 </select>
-                <iframe id="video1" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+                <iframe id="video{{ i }}" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="video-container">
-                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video2')">
-                    <option selected>Выберите платформу</option>
-                    <option value="plvideo">Plvideo</option>
-                    <option value="rutube">Rutube</option>
-                    <option value="youtube">YouTube</option>
-                </select>
-                <iframe id="video2" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="video-container">
-                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video3')">
-                    <option selected>Выберите платформу</option>
-                    <option value="plvideo">Plvideo</option>
-                    <option value="rutube">Rutube</option>
-                    <option value="youtube">YouTube</option>
-                </select>
-                <iframe id="video3" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 
 <script>
-    function changeVideo(select, videoId) {
-        const videoFrame = document.getElementById(videoId);
-        const platform = select.value;
+    const videoUrls = {
+        'plvideo': ['https://plvideo.ru/embed/73d8U_R6GJqY', 'https://plvideo.ru/embed/pDzyqns0UbE6', 'https://plvideo.ru/embed/cnuvJHabNvN1'],
+        'rutube': ['https://rutube.ru/video/embed/184d1b81ff3f46fff2c23b225368f2c2', 'https://rutube.ru/video/embed/0bb81a8382263e39b4f7285134cda07e', 'https://rutube.ru/video/embed/a2a7d815df5b95c93274c717cbea3fb1'],
+        'youtube': ['https://www.youtube.com/embed/mV2Tnk5O2L0', 'https://www.youtube.com/embed/jZ2hnf1u9J0', 'https://www.youtube.com/embed/4f4anaEe4Zo']
+    };
 
-        let videoUrl = '';
-        switch (platform) {
-            case 'plvideo':
-                if (videoId === 'video1') videoUrl = 'https://plvideo.ru/embed/73d8U_R6GJqY';
-                else if (videoId === 'video2') videoUrl = 'https://plvideo.ru/embed/pDzyqns0UbE6';
-                else if (videoId === 'video3') videoUrl = 'https://plvideo.ru/embed/cnuvJHabNvN1';
-                break;
-            case 'rutube':
-                if (videoId === 'video1') videoUrl = 'https://rutube.ru/video/embed/184d1b81ff3f46fff2c23b225368f2c2';
-                else if (videoId === 'video2') videoUrl = 'https://rutube.ru/video/embed/0bb81a8382263e39b4f7285134cda07e';
-                else if (videoId === 'video3') videoUrl = 'https://rutube.ru/video/embed/a2a7d815df5b95c93274c717cbea3fb1';
-                break;
-            case 'youtube':
-                if (videoId === 'video1') videoUrl = 'https://www.youtube.com/embed/mV2Tnk5O2L0';
-                else if (videoId === 'video2') videoUrl = 'https://www.youtube.com/embed/jZ2hnf1u9J0';
-                else if (videoId === 'video3') videoUrl = 'https://www.youtube.com/embed/4f4anaEe4Zo';
-                break;
-            default:
-                videoUrl = '';
-        }
-        videoFrame.src = videoUrl;
+    function changeVideo(select, videoId) {
+        const platform = select.value;
+        const videoIndex = videoId.replace('video', '') - 1;
+        document.getElementById(videoId).src = videoUrls[platform][videoIndex] || '';
     }
 </script>
 
-
-<!-- Раздел с анимированными фотографиями -->
+<!-- Анимированные фотографии -->
 <div class="mt-5 text-center">
     <div class="row justify-content-center">
+        {% set photos = ['Platforma_Channel.png', 'Rutube_Channel.png', 'Youtube_Channel.png'] %}
+        {% for photo in photos %}
         <div class="col-auto">
             <div class="photo-container">
-                <img src="{{ url_for('static', filename='images/video-platforms/Platforma_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 1" style="width: 170px; height: auto;">
+                <img src="{{ url_for('static', filename='images/video-platforms/' ~ photo) }}" class="img-fluid animated-photo" alt="Фото {{ loop.index }}" style="width: 170px; height: auto;">
             </div>
         </div>
-        <div class="col-auto">
-            <div class="photo-container">
-                <img src="{{ url_for('static', filename='images/video-platforms/Rutube_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 2" style="width: 170px; height: auto;">
-            </div>
-        </div>
-        <div class="col-auto">
-            <div class="photo-container">
-                <img src="{{ url_for('static', filename='images/video-platforms/Youtube_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 3" style="width: 170px; height: auto;">
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 
-
-<!-- Раздел с курсами -->
+<!-- Популярные курсы -->
 <div class="mt-5">
     <h2>Популярные курсы</h2>
     <div class="row">
@@ -140,11 +131,11 @@
             {% for course in courses %}
             <div class="col-md-4">
                 <div class="card">
-                    <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="{{ course.title }}">
+                    <img src="{{ url_for('static', filename='images/' ~ course.image) }}" class="card-img-top" alt="{{ course.title }}" loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">{{ course.title }}</h5>
                         <p class="card-text">{{ course.description }}</p>
-                        <button class="btn btn-primary" data-toggle="modal" data-target="#courseModal{{ course.id }}">Подробнее</button>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">Подробнее</button>
                     </div>
                 </div>
             </div>
@@ -155,15 +146,13 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <p>{{ course.details }}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                             <a href="{{ url_for('courses.list_courses') }}" class="btn btn-primary">Назад к курсам</a>
                         </div>
                     </div>
@@ -175,4 +164,5 @@
         {% endif %}
     </div>
 </div>
+
 {% endblock %}
