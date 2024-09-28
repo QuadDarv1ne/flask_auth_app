@@ -23,12 +23,14 @@ def create_app():
 
     from app.routes.auth import auth_bp
     from app.routes.main import main_bp
-    from app.routes.profile import profile_bp  # Измените на profile_bp
+    from app.routes.profile import profile_bp
+    from app.routes.courses import courses_bp
     from app.routes.errors import errors_bp
 
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(main_bp)
-    app.register_blueprint(profile_bp)  # Используйте profile_bp
+    app.register_blueprint(profile_bp)
+    app.register_blueprint(courses_bp)
     app.register_blueprint(errors_bp)
 
     return app

@@ -3,11 +3,149 @@
 
 {% block content %}
 <div class="jumbotron text-center">
-    <h1 class="display-4">Добро пожаловать в Flask Auth App!</h1>
+    <h1 class="display-4">Добро пожаловать в Flask Auth App</h1>
     <p class="lead">Это приложение для авторизации, регистрации и управления профилем пользователя с использованием Flask.</p>
-    <hr class="my-4">
-    <p>Нажмите ниже, чтобы зарегистрироваться или войти в систему.</p>
-    <a class="btn btn-primary btn-lg" href="{{ url_for('auth.register') }}" role="button">Регистрация</a>
-    <a class="btn btn-success btn-lg" href="{{ url_for('auth.login') }}" role="button">Войти</a>
+</div>
+
+<!-- Карусель с фотографиями курсов -->
+<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{ url_for('static', filename='images/banner_1.jpg') }}" class="d-block w-100" alt="Курс 1">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Курс 1</h5>
+                <p>Описание курса 1.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/banner_2.jpg') }}" class="d-block w-100" alt="Курс 2">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Курс 2</h5>
+                <p>Описание курса 2.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ url_for('static', filename='images/banner_3.jpg') }}" class="d-block w-100" alt="Курс 3">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>Курс 3</h5>
+                <p>Описание курса 3.</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Предыдущий</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Следующий</span>
+    </button>
+</div>
+
+<!-- Раздел с видео -->
+<div class="mt-5">
+    <h2>Наши видео</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="video-container">
+                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video1')">
+                    <option selected>Выберите платформу</option>
+                    <option value="plvideo">Plvideo</option>
+                    <option value="rutube">Rutube</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+                <iframe id="video1" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="video-container">
+                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video2')">
+                    <option selected>Выберите платформу</option>
+                    <option value="plvideo">Plvideo</option>
+                    <option value="rutube">Rutube</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+                <iframe id="video2" width="100%" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="video-container">
+                <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video3')">
+                    <option selected>Выберите платформу</option>
+                    <option value="plvideo">Plvideo</option>
+                    <option value="rutube">Rutube</option>
+                    <option value="youtube">YouTube</option>
+                </select>
+                <iframe id="video3" width="100%" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function changeVideo(select, videoId) {
+        const videoFrame = document.getElementById(videoId);
+        const platform = select.value;
+
+        let videoUrl = '';
+        switch (platform) {
+            case 'plvideo':
+                if (videoId === 'video1') videoUrl = 'https://plvideo.ru/embed/73d8U_R6GJqY';
+                else if (videoId === 'video2') videoUrl = 'https://plvideo.ru/embed/pDzyqns0UbE6';
+                else if (videoId === 'video3') videoUrl = 'https://plvideo.ru/embed/cnuvJHabNvN1';
+                break;
+            case 'rutube':
+                if (videoId === 'video1') videoUrl = 'https://rutube.ru/video/embed/184d1b81ff3f46fff2c23b225368f2c2';
+                else if (videoId === 'video2') videoUrl = 'https://rutube.ru/video/embed/0bb81a8382263e39b4f7285134cda07e';
+                else if (videoId === 'video3') videoUrl = 'https://rutube.ru/video/embed/a2a7d815df5b95c93274c717cbea3fb1';
+                break;
+            case 'youtube':
+                if (videoId === 'video1') videoUrl = 'https://www.youtube.com/embed/mV2Tnk5O2L0';
+                else if (videoId === 'video2') videoUrl = 'https://www.youtube.com/embed/jZ2hnf1u9J0';
+                else if (videoId === 'video3') videoUrl = 'https://www.youtube.com/embed/4f4anaEe4Zo';
+                break;
+            default:
+                videoUrl = ''; // Очистить видео, если платформа не выбрана
+        }
+        videoFrame.src = videoUrl;
+    }
+</script>
+
+
+<!-- Раздел с курсами -->
+<div class="mt-5">
+    <h2>Популярные курсы</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/python-beginner.jpg') }}" class="card-img-top" alt="Курс 1">
+                <div class="card-body">
+                    <h5 class="card-title">Программирование на Python для начинающих</h5>
+                    <p class="card-text">Этот курс предназначен для тех, кто только начинает свой путь в программировании. Мы рассмотрим базовые понятия, синтаксис языка и простые проекты, которые помогут вам лучше понять, как работает Python.</p>
+                    <a href="{{ url_for('courses.course_details', course_id=1) }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/web-development.jpg') }}" class="card-img-top" alt="Курс 2">
+                <div class="card-body">
+                    <h5 class="card-title">Веб-разработка: Путеводитель для Начинающих и Продвинутых</h5>
+                    <p class="card-text">Погрузитесь в мир веб-разработки, изучите современные технологии и практики создания веб-сайтов от начала до конца.</p>
+                    <a href="{{ url_for('courses.course_details', course_id=7) }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ url_for('static', filename='images/blender.jpg') }}" class="card-img-top" alt="Курс 3">
+                <div class="card-body">
+                    <h5 class="card-title">3D моделирование и анимация персонажей в Blender ❂</h5>
+                    <p class="card-text">В этом курсе вы изучите основы 3D моделирования и анимации в Blender, а также создадите свои собственные 3D персонажи.</p>
+                    <a href="{{ url_for('courses.course_details', course_id=9) }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
