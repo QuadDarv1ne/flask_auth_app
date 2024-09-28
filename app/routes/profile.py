@@ -4,7 +4,7 @@ from werkzeug.utils import secure_filename
 import os
 from flask import current_app
 from app import db
-from app.models import User
+from app.models import FavoriteCourse, User
 from app.forms import UpdateProfileForm
 
 profile_bp = Blueprint('profile', __name__)
@@ -12,7 +12,11 @@ profile_bp = Blueprint('profile', __name__)
 @profile_bp.route("/profile", endpoint='user_profile')
 @login_required
 def profile():
-    return render_template('profile.html', title='Профиль', user=current_user)
+    user_favorites = FavoriteCourse.query.filter_by(user_id=current_user.id).all()
+    favorite_courses = [favorite.course for favorite in user_favorites]
+    print(f"Избранные курсы: {favorite_courses}")  # Добавьте эту строку для отладки
+    return render_template('profile.html', favorite_courses=favorite_courses)
+
 
 @profile_bp.route("/profile/edit", methods=['GET', 'POST'])
 @login_required

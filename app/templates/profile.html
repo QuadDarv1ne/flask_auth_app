@@ -10,4 +10,33 @@
         <a href="{{ url_for('profile.profile_edit') }}" class="btn btn-primary">Редактировать профиль</a>
     </div>
 </div>
+
+<!-- Раздел с избранными курсами -->
+<div class="mt-5">
+    <h3 class="text-center">Избранные курсы</h3>
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+            <thead>
+                <tr>
+                    <th>Название курса</th>
+                    <th>Описание</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in favorite_courses %}
+                <tr>
+                    <td>{{ course.title }}</td>
+                    <td>{{ course.description }}</td>
+                    <td>{{ course.price }}₽</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">Нет избранных курсов.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
