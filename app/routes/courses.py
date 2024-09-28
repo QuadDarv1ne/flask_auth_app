@@ -33,3 +33,11 @@ def add_to_favorites(course_id):
     else:
         flash('Курс уже в избранном.', 'info')
     return redirect(url_for('courses.list_courses'))
+
+
+@courses_bp.route('/popular_courses')
+def popular_courses():
+    course_ids = [1, 2, 3]
+    courses = Course.query.filter(Course.id.in_(course_ids)).all()
+    print(courses)  # Добавьте эту строку для отладки
+    return render_template('courses.html', courses=courses)

@@ -8,37 +8,35 @@
 </div>
 
 <!-- Карусель с фотографиями курсов -->
-<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{{ url_for('static', filename='images/banner_1.jpg') }}" class="d-block w-100" alt="Курс 1">
+            <img src="{{ url_for('static', filename='images/banner_1.jpg') }}" class="d-block w-100" alt="Курс 1" loading="auto">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Курс 1</h5>
                 <p>Описание курса 1.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/banner_2.jpg') }}" class="d-block w-100" alt="Курс 2">
+            <img src="{{ url_for('static', filename='images/banner_2.jpg') }}" class="d-block w-100" alt="Курс 2" loading="auto">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Курс 2</h5>
                 <p>Описание курса 2.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="{{ url_for('static', filename='images/banner_3.jpg') }}" class="d-block w-100" alt="Курс 3">
+            <img src="{{ url_for('static', filename='images/banner_3.jpg') }}" class="d-block w-100" alt="Курс 3" loading="auto">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Курс 3</h5>
                 <p>Описание курса 3.</p>
             </div>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev" aria-label="Предыдущий слайд">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Предыдущий</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
+    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next" aria-label="Следующий слайд">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Следующий</span>
     </button>
 </div>
 
@@ -65,7 +63,7 @@
                     <option value="rutube">Rutube</option>
                     <option value="youtube">YouTube</option>
                 </select>
-                <iframe id="video2" width="100%" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe id="video2" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
         <div class="col-md-4">
@@ -76,7 +74,7 @@
                     <option value="rutube">Rutube</option>
                     <option value="youtube">YouTube</option>
                 </select>
-                <iframe id="video3" width="100%" height="200" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe id="video3" width="100%" height="200" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -105,47 +103,76 @@
                 else if (videoId === 'video3') videoUrl = 'https://www.youtube.com/embed/4f4anaEe4Zo';
                 break;
             default:
-                videoUrl = ''; // Очистить видео, если платформа не выбрана
+                videoUrl = '';
         }
         videoFrame.src = videoUrl;
     }
 </script>
 
 
+<!-- Раздел с анимированными фотографиями -->
+<div class="mt-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <div class="photo-container">
+                <img src="{{ url_for('static', filename='images/video-platforms/Platforma_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 1" style="width: 150px; height: auto;">
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="photo-container">
+                <img src="{{ url_for('static', filename='images/video-platforms/Rutube_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 2" style="width: 150px; height: auto;">
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="photo-container">
+                <img src="{{ url_for('static', filename='images/video-platforms/Youtube_Channel.png') }}" class="img-fluid animated-photo" alt="Фото 3" style="width: 150px; height: auto;">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Раздел с курсами -->
 <div class="mt-5">
     <h2>Популярные курсы</h2>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/python-beginner.jpg') }}" class="card-img-top" alt="Курс 1">
-                <div class="card-body">
-                    <h5 class="card-title">Программирование на Python для начинающих</h5>
-                    <p class="card-text">Этот курс предназначен для тех, кто только начинает свой путь в программировании. Мы рассмотрим базовые понятия, синтаксис языка и простые проекты, которые помогут вам лучше понять, как работает Python.</p>
-                    <a href="{{ url_for('courses.course_details', course_id=1) }}" class="btn btn-primary">Подробнее</a>
+        {% if courses %}
+            {% for course in courses %}
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="{{ course.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text">{{ course.description }}</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#courseModal{{ course.id }}">Подробнее</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/web-development.jpg') }}" class="card-img-top" alt="Курс 2">
-                <div class="card-body">
-                    <h5 class="card-title">Веб-разработка: Путеводитель для Начинающих и Продвинутых</h5>
-                    <p class="card-text">Погрузитесь в мир веб-разработки, изучите современные технологии и практики создания веб-сайтов от начала до конца.</p>
-                    <a href="{{ url_for('courses.course_details', course_id=7) }}" class="btn btn-primary">Подробнее</a>
+
+            <!-- Модальное окно для курса -->
+            <div class="modal fade" id="courseModal{{ course.id }}" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel{{ course.id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>{{ course.details }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                            <a href="{{ url_for('courses.list_courses') }}" class="btn btn-primary">Назад к курсам</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="{{ url_for('static', filename='images/blender.jpg') }}" class="card-img-top" alt="Курс 3">
-                <div class="card-body">
-                    <h5 class="card-title">3D моделирование и анимация персонажей в Blender ❂</h5>
-                    <p class="card-text">В этом курсе вы изучите основы 3D моделирования и анимации в Blender, а также создадите свои собственные 3D персонажи.</p>
-                    <a href="{{ url_for('courses.course_details', course_id=9) }}" class="btn btn-primary">Подробнее</a>
-                </div>
-            </div>
-        </div>
+            {% endfor %}
+        {% else %}
+            <p>Нет доступных курсов.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

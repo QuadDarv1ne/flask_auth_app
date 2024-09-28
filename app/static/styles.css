@@ -50,3 +50,20 @@
     font-size: 1rem;
     color: #555;
 }
+
+/* Стили для QR-кодов на видео-платформы */
+.photo-container {
+    overflow: hidden;
+}
+
+.animated-photo {
+    width: 150px; /* фиксированная ширина */
+    height: auto; /* автоматическая высота для сохранения пропорций */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+.photo-container:hover .animated-photo {
+    transform: scale(1.1);
+    opacity: 0.9;
+}
