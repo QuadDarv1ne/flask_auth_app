@@ -8,9 +8,22 @@ from . import db, login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    Загружает пользователя по ID.
+    """
     return User.query.get(int(user_id))
 
 class User(db.Model, UserMixin):
+    """
+    Модель пользователя.
+
+    Атрибуты:
+        id (int): Уникальный идентификатор пользователя.
+        username (str): Имя пользователя, уникальное.
+        email (str): Электронная почта пользователя, уникальная.
+        image_file (str): Путь до изображения профиля, по умолчанию 'default.jpg'.
+        password (str): Хэш пароля пользователя.
+    """
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False, index=True)
     email = db.Column(db.String(120), unique=True, nullable=False, index=True)
@@ -20,11 +33,29 @@ class User(db.Model, UserMixin):
     favorites = relationship('FavoriteCourse', back_populates='user', cascade='all, delete-orphan')
 
     def get_reset_token(self, expires_sec=1800):
+        """
+        Генерирует токен для сброса пароля.
+
+        Параметры:
+            expires_sec (int): Время жизни токена в секундах.
+
+        Возвращает:
+            str: Токен для сброса пароля.
+        """
         s = Serializer(current_app.config['SECRET_KEY'], expires_in=expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
+        """
+        Проверяет токен для сброса пароля.
+
+        Параметры:
+            token (str): Токен для сброса пароля.
+
+        Возвращает:
+            User: Пользователь, если токен действителен, иначе None.
+        """
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
@@ -33,27 +64,68 @@ class User(db.Model, UserMixin):
         return User.query.get(user_id)
 
     def add_to_favorites(self, course_id):
+        """
+        Добавляет курс в избранное пользователя.
+
+        Параметры:
+            course_id (int): Идентификатор курса.
+        """
         if not any(favorite.course_id == course_id for favorite in self.favorites):
-            new_favorite = FavoriteCourse(user_id=self.id, course_id=course_id)
-            db.session.add(new_favorite)
-            db.session.commit()
+            try:
+                new_favorite = FavoriteCourse(user_id=self.id, course_id=course_id)
+                db.session.add(new_favorite)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                raise e
 
     def remove_from_favorites(self, course_id):
+        """
+        Удаляет курс из избранного пользователя.
+
+        Параметры:
+            course_id (int): Идентификатор курса.
+        """
         favorite = FavoriteCourse.query.filter_by(user_id=self.id, course_id=course_id).first()
         if favorite:
-            db.session.delete(favorite)
-            db.session.commit()
+            try:
+                db.session.delete(favorite)
+                db.session.commit()
+            except Exception as e:
+                db.session.rollback()
+                raise e
 
     def get_favorite_courses(self):
+        """
+        Возвращает список избранных курсов пользователя.
+
+        Возвращает:
+            list: Список избранных курсов.
+        """
         return [favorite.course for favorite in self.favorites]
 
     def get_unique_favorite_courses(self):
+        """
+        Возвращает список уникальных избранных курсов пользователя.
+
+        Возвращает:
+            list: Список уникальных избранных курсов.
+        """
         return list(set(favorite.course for favorite in self.favorites))
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class FavoriteCourse(db.Model):
+    """
+    Модель избранного курса.
+
+    Атрибуты:
+        id (int): Уникальный идентификатор записи.
+        user_id (int): Идентификатор пользователя.
+        course_id (int): Идентификатор курса.
+        created_at (datetime): Дата и время добавления в избранное.
+    """
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
@@ -66,6 +138,17 @@ class FavoriteCourse(db.Model):
         return f"FavoriteCourse(user_id={self.user_id}, course_id={self.course_id}, created_at={self.created_at})"
 
 class Course(db.Model):
+    """
+    Модель курса.
+
+    Атрибуты:
+        id (int): Уникальный идентификатор курса.
+        title (str): Название курса.
+        description (str): Описание курса.
+        details (str): Подробности курса.
+        image (str): Путь до изображения курса.
+        price (decimal): Цена курса.
+    """
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
     description = db.Column(db.String(255), nullable=False)
@@ -75,12 +158,30 @@ class Course(db.Model):
 
     @classmethod
     def get_course_by_id(cls, course_id):
+        """
+        Возвращает курс по его идентификатору.
+
+        Параметры:
+            course_id (int): Идентификатор курса.
+
+        Возвращает:
+            Course: Курс, если найден, иначе None.
+        """
         return cls.query.get(course_id)
 
     def __repr__(self):
         return f'<Course(id={self.id}, title={self.title})>'
 
 class Payment(db.Model):
+    """
+    Модель оплаты.
+
+    Атрибуты:
+        id (int): Уникальный идентификатор оплаты.
+        course_id (int): Идентификатор оплаченного курса.
+        payment_status (str): Статус оплаты.
+        created_at (datetime): Дата и время создания записи.
+    """
     id = db.Column(db.Integer, primary_key=True)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
     payment_status = db.Column(db.String(50), nullable=False)

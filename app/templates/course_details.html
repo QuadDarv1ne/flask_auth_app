@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="card mt-4">
+    <div class="card-body">
+        <h1 class="card-title">{{ course.title }}</h1>
+        <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top mb-4" alt="{{ course.title }}">
+
+        <h5 class="card-subtitle mb-2 text-muted">Описание</h5>
+        <p class="card-text">{{ course.description }}</p>
+
+        <h5 class="card-subtitle mb-2 text-muted">Детали курса</h5>
+        <p class="card-text">{{ course.details }}</p>
+
+        <h5 class="card-subtitle mb-2 text-muted">Цена</h5>
+        <p class="card-text"><strong>{{ course.price }}₽</strong></p>
+
+        {% if current_user.is_authenticated %}
+            <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-primary">Добавить в избранное</button>
+            </form>
+        {% else %}
+            <p class="mb-0">Чтобы добавлять курсы в избранное, <a href="{{ url_for('auth.login') }}">войдите</a>.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

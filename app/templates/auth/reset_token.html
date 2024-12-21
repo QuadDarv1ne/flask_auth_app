@@ -7,14 +7,34 @@
         <h2 class="card-title">Восстановление пароля</h2>
         <form method="POST">
             {{ form.hidden_tag() }}
+            
+            <!-- Поле для ввода нового пароля -->
             <div class="form-group">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control") }}
+                {% if form.password.errors %}
+                    <div class="text-danger">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Поле для подтверждения нового пароля -->
             <div class="form-group">
                 {{ form.confirm_password.label(class="form-label") }}
                 {{ form.confirm_password(class="form-control") }}
+                {% if form.confirm_password.errors %}
+                    <div class="text-danger">
+                        {% for error in form.confirm_password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Кнопка отправки формы для обновления пароля -->
             <button type="submit" class="btn btn-primary">Обновить пароль</button>
         </form>
     </div>

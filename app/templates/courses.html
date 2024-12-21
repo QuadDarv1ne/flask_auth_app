@@ -1,8 +1,22 @@
-<!-- templates/courses.html -->
 {% extends "layouts/base.html" %}
+
+{% block title %}Курсы{% endblock %}
 
 {% block content %}
 <h1 class="mb-4">Курсы</h1>
+
+<!-- Обработка сообщений об успехе и ошибках -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <div class="row">
     {% for course in courses %}
     <div class="col-md-4 mb-4">
@@ -14,7 +28,7 @@
                 <p class="card-text"><strong>Цена: {{ course.price }}₽</strong></p>
             </div>
             <div class="card-footer">
-                <button class="btn btn-info" data-toggle="modal" data-target="#courseModal{{ course.id }}">Подробнее</button>
+                <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">Подробнее</button>
                 {% if current_user.is_authenticated %}
                     <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-primary">Добавить в избранное</button>
@@ -27,20 +41,18 @@
     </div>
 
     <!-- Модальное окно для курса -->
-    <div class="modal fade" id="courseModal{{ course.id }}" tabindex="-1" role="dialog" aria-labelledby="courseModalLabel{{ course.id }}" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="courseModal{{ course.id }}" tabindex="-1" aria-labelledby="courseModalLabel{{ course.id }}" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>{{ course.details }}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
                 </div>
             </div>
         </div>

@@ -7,26 +7,73 @@
         <h2 class="card-title">Регистрация</h2>
         <form method="POST" enctype="multipart/form-data">  <!-- Добавлен enctype для загрузки файлов -->
             {{ form.hidden_tag() }}
+            
+            <!-- Поле для ввода имени пользователя -->
             <div class="form-group">
                 {{ form.username.label(class="form-label") }}
                 {{ form.username(class="form-control") }}
+                {% if form.username.errors %}
+                    <div class="text-danger">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Поле для ввода email -->
             <div class="form-group">
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control") }}
+                {% if form.email.errors %}
+                    <div class="text-danger">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Поле для ввода пароля -->
             <div class="form-group">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control") }}
+                {% if form.password.errors %}
+                    <div class="text-danger">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Поле для подтверждения пароля -->
             <div class="form-group">
                 {{ form.confirm_password.label(class="form-label") }}
                 {{ form.confirm_password(class="form-control") }}
+                {% if form.confirm_password.errors %}
+                    <div class="text-danger">
+                        {% for error in form.confirm_password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Поле для загрузки фото профиля -->
             <div class="form-group">
-                <label class="form-label">Фото профиля</label>
-                <input type="file" name="profile_picture" class="form-control" accept="image/*"> <!-- Поле для загрузки фото -->
+                {{ form.profile_picture.label(class="form-label") }}
+                {{ form.profile_picture(class="form-control-file") }}
+                {% if form.profile_picture.errors %}
+                    <div class="text-danger">
+                        {% for error in form.profile_picture.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
+            
+            <!-- Кнопка регистрации -->
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
         </form>
     </div>

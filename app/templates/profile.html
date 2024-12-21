@@ -3,9 +3,16 @@
 {% block content %}
 <div class="card mt-4">
     <div class="card-body text-center">
+        <!-- Аватар пользователя -->
         <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="rounded-circle" width="150" height="150" alt="Профиль">
+        
+        <!-- Имя пользователя -->
         <h2 class="card-title mt-4">{{ current_user.username }}</h2>
+        
+        <!-- Email пользователя -->
         <p class="card-text">{{ current_user.email }}</p>
+        
+        <!-- Кнопка для редактирования профиля -->
         <a href="{{ url_for('profile.profile_edit') }}" class="btn btn-primary">Редактировать профиль</a>
     </div>
 </div>
@@ -13,29 +20,36 @@
 <!-- Раздел с избранными курсами -->
 <div class="mt-5">
     <h3 class="text-center">Избранные курсы</h3>
-    <div class="table-responsive">
-        <table class="table table-striped text-center">
-            <thead>
-                <tr>
-                    <th>Название курса</th>
-                    <th>Описание</th>
-                    <th>Цена</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
                 {% for course in favorite_courses %}
-                <tr>
-                    <td>{{ course.title }}</td>
-                    <td>{{ course.description }}</td>
-                    <td>{{ course.price }}₽</td>
-                </tr>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <img src="{{ url_for('static', filename='course_images/' ~ course.image) }}" class="card-img-top" alt="{{ course.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ course.title }}</h5>
+                            <p class="card-text">{{ course.description }}</p>
+                            <p class="card-text"><strong>Цена:</strong> {{ course.price }}₽</p>
+                            <!-- Кнопка для удаления из избранного -->
+                            <form action="{{ url_for('profile.remove_favorite', course_id=course.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">Удалить из избранного</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 {% else %}
-                <tr>
-                    <td colspan="3">Нет избранных курсов.</td>
-                </tr>
+                <div class="col-12 text-center">
+                    <p>Нет избранных курсов.</p>
+                </div>
                 {% endfor %}
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Кнопка назад -->
+<div class="fixed-bottom mb-4 mr-4 text-right">
+    <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Назад</a>
 </div>
 {% endblock %}

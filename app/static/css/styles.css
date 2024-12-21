@@ -64,16 +64,7 @@
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
-
 .photo-container:hover .animated-photo {
     transform: scale(1.15);
     opacity: 0.5;
-}
-
-.btn-primary {
-    background-color: #007bff;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
 }
