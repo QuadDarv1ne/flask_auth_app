@@ -3,7 +3,7 @@ services:
 - type: web
   name: flask_auth_app_website
   runtime: python
-  pythonVersion: 3.12
+  pythonVersion: 3.13
   repo: https://github.com/QuadDarv1ne/flask_auth_app
   envVars:
     - key: .env
