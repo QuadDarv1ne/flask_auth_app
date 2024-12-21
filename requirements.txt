@@ -5,3 +5,4 @@ Flask-Bcrypt
 Flask-Login
 Flask-Mail
 Flask-Migrate
+python-dotenv
