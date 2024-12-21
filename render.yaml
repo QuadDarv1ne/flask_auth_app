@@ -1,0 +1,26 @@
+# Exported from Render on 2024-12-21T13:57:09Z
+services:
+- type: web
+  name: flask_auth_app_website
+  runtime: static
+  repo: https://github.com/QuadDarv1ne/flask_auth_app
+  envVars:
+  - key: .env
+    sync: false
+  - key: MAIL_PASSWORD
+    sync: false
+  - key: MAIL_USERNAME
+    sync: false
+  - key: MAIL_USE_TLS
+    sync: false
+  - key: MAIL_PORT
+    sync: false
+  - key: MAIL_SERVER
+    sync: false
+  - key: SQLALCHEMY_DATABASE_URI
+    sync: false
+  - key: SECRET_KEY
+    sync: false
+  buildCommand: pip install -r requirements.txt
+  staticPublishPath: flask run --host 0.0.0.0 --port 10000
+version: "1"
