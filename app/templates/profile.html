@@ -4,7 +4,7 @@
 <div class="card mt-4">
     <div class="card-body text-center">
         <!-- Аватар пользователя -->
-        <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="rounded-circle" width="150" height="150" alt="Профиль">
+        <img src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}" class="rounded-circle" width="150" height="150" alt="Профиль пользователя">
         
         <!-- Имя пользователя -->
         <h2 class="card-title mt-4">{{ current_user.username }}</h2>
@@ -33,6 +33,7 @@
                             <p class="card-text"><strong>Цена:</strong> {{ course.price }}₽</p>
                             <!-- Кнопка для удаления из избранного -->
                             <form action="{{ url_for('profile.remove_favorite', course_id=course.id) }}" method="post">
+                                {{ form.hidden_tag() }}
                                 <button type="submit" class="btn btn-danger">Удалить из избранного</button>
                             </form>
                         </div>

@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship
 from . import db, login_manager
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id: int) -> 'User':
     """
     Загружает пользователя по ID.
     """
@@ -16,176 +16,127 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     """
     Модель пользователя.
-
-    Атрибуты:
-        id (int): Уникальный идентификатор пользователя.
-        username (str): Имя пользователя, уникальное.
-        email (str): Электронная почта пользователя, уникальная.
-        image_file (str): Путь до изображения профиля, по умолчанию 'default.jpg'.
-        password (str): Хэш пароля пользователя.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False, index=True)
-    email = db.Column(db.String(120), unique=True, nullable=False, index=True)
-    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(20), unique=True, nullable=False, index=True)
+    email = Column(String(120), unique=True, nullable=False, index=True)
+    image_file = Column(String(20), nullable=False, default='default.jpg')
+    password = Column(String(60), nullable=False)
     
     favorites = relationship('FavoriteCourse', back_populates='user', cascade='all, delete-orphan')
 
-    def get_reset_token(self, expires_sec=1800):
+    def get_reset_token(self, expires_sec: int = 1800) -> str:
         """
         Генерирует токен для сброса пароля.
-
-        Параметры:
-            expires_sec (int): Время жизни токена в секундах.
-
-        Возвращает:
-            str: Токен для сброса пароля.
         """
         s = Serializer(current_app.config['SECRET_KEY'], expires_in=expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 
     @staticmethod
-    def verify_reset_token(token):
+    def verify_reset_token(token: str) -> 'User':
         """
         Проверяет токен для сброса пароля.
-
-        Параметры:
-            token (str): Токен для сброса пароля.
-
-        Возвращает:
-            User: Пользователь, если токен действителен, иначе None.
         """
         s = Serializer(current_app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']
-        except Exception:
+        except (TypeError, ValueError):
             return None
         return User.query.get(user_id)
 
-    def add_to_favorites(self, course_id):
+    def add_to_favorites(self, course_id: int) -> None:
         """
         Добавляет курс в избранное пользователя.
-
-        Параметры:
-            course_id (int): Идентификатор курса.
         """
         if not any(favorite.course_id == course_id for favorite in self.favorites):
             try:
                 new_favorite = FavoriteCourse(user_id=self.id, course_id=course_id)
                 db.session.add(new_favorite)
                 db.session.commit()
-            except Exception as e:
+            except db.exc.SQLAlchemyError as e:
                 db.session.rollback()
                 raise e
 
-    def remove_from_favorites(self, course_id):
+    def remove_from_favorites(self, course_id: int) -> None:
         """
         Удаляет курс из избранного пользователя.
-
-        Параметры:
-            course_id (int): Идентификатор курса.
         """
         favorite = FavoriteCourse.query.filter_by(user_id=self.id, course_id=course_id).first()
         if favorite:
             try:
                 db.session.delete(favorite)
                 db.session.commit()
-            except Exception as e:
+            except db.exc.SQLAlchemyError as e:
                 db.session.rollback()
                 raise e
 
-    def get_favorite_courses(self):
+    def get_favorite_courses(self) -> list:
         """
         Возвращает список избранных курсов пользователя.
-
-        Возвращает:
-            list: Список избранных курсов.
         """
         return [favorite.course for favorite in self.favorites]
 
-    def get_unique_favorite_courses(self):
+    def get_unique_favorite_courses(self) -> list:
         """
         Возвращает список уникальных избранных курсов пользователя.
-
-        Возвращает:
-            list: Список уникальных избранных курсов.
         """
         return list(set(favorite.course for favorite in self.favorites))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
 class FavoriteCourse(db.Model):
     """
     Модель избранного курса.
-
-    Атрибуты:
-        id (int): Уникальный идентификатор записи.
-        user_id (int): Идентификатор пользователя.
-        course_id (int): Идентификатор курса.
-        created_at (datetime): Дата и время добавления в избранное.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    __tablename__ = 'favorite_course'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    course_id = Column(Integer, ForeignKey('course.id'), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship('User', back_populates='favorites')
     course = relationship('Course', backref='favorite_courses')
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"FavoriteCourse(user_id={self.user_id}, course_id={self.course_id}, created_at={self.created_at})"
 
 class Course(db.Model):
     """
     Модель курса.
-
-    Атрибуты:
-        id (int): Уникальный идентификатор курса.
-        title (str): Название курса.
-        description (str): Описание курса.
-        details (str): Подробности курса.
-        image (str): Путь до изображения курса.
-        price (decimal): Цена курса.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(150), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    details = db.Column(db.Text, nullable=False)
-    image = db.Column(db.String(150), nullable=False)
-    price = db.Column(Numeric(10, 2), nullable=False)
+    __tablename__ = 'course'
+
+    id = Column(Integer, primary_key=True)
+    title = Column(String(150), nullable=False)
+    description = Column(String(255), nullable=False)
+    details = Column(db.Text, nullable=False)
+    image = Column(String(150), nullable=False)
+    price = Column(Numeric(10, 2), nullable=False)
 
     @classmethod
-    def get_course_by_id(cls, course_id):
+    def get_course_by_id(cls, course_id: int) -> 'Course':
         """
         Возвращает курс по его идентификатору.
-
-        Параметры:
-            course_id (int): Идентификатор курса.
-
-        Возвращает:
-            Course: Курс, если найден, иначе None.
         """
         return cls.query.get(course_id)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f'<Course(id={self.id}, title={self.title})>'
 
 class Payment(db.Model):
     """
     Модель оплаты.
-
-    Атрибуты:
-        id (int): Уникальный идентификатор оплаты.
-        course_id (int): Идентификатор оплаченного курса.
-        payment_status (str): Статус оплаты.
-        created_at (datetime): Дата и время создания записи.
     """
-    id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
-    payment_status = db.Column(db.String(50), nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.now())
+    __tablename__ = 'payment'
 
-    def __repr__(self):
+    id = Column(Integer, primary_key=True)
+    course_id = Column(Integer, ForeignKey('course.id'), nullable=False)
+    payment_status = Column(String(50), nullable=False)
+    created_at = Column(DateTime, default=db.func.now())
+
+    def __repr__(self) -> str:
         return f'<Payment(id={self.id}, course_id={self.course_id})>'
