@@ -14,25 +14,24 @@
     <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png') }}" />
     <meta property="og:url" content="{{ url_for('main.home', _external=True) }}" />
     <meta name="twitter:card" content="summary_large_image">
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    
+
     <!-- Favicon -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <!-- PWA manifest -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    
 </head>
 <body class="theme-white">
     <!-- Навигационная панель -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% if current_user.is_authenticated %}{{ url_for('profile.user_profile') }}{% else %}{{ url_for('main.home') }}{% endif %}">Главная</a>
+            <a class="navbar-brand fw-bold" href="{{ url_for('main.home') }}">Maestro7IT</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -41,16 +40,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('courses.list_courses') }}">Курсы</a>
                     </li>
-                    {% if current_user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('profile.user_profile') }}">Профиль</a>
-                        </li>
-                    {% endif %}
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Выход</a>
+                            <a class="nav-link" href="{{ url_for('profile.user_profile') }}">Профиль</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="{{ url_for('auth.logout') }}">Выход</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -64,13 +61,13 @@
             </div>
         </div>
     </nav>
-    
+
     <!-- Контент страницы -->
-    <div class="container mt-4">
+    <main class="container mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm" role="alert">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
                     </div>
@@ -78,7 +75,7 @@
             {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
     <!-- Кнопка для изменения темы -->
     <div class="dropdown position-fixed" style="bottom: 20px; right: 20px; z-index: 1000;">
@@ -96,32 +93,27 @@
     </div>
 
     <!-- Футер -->
-    <footer class="bg-light text-center text-lg-start mt-4">
-        <div class="text-center p-3">
-            © {{ current_year }} Dupley Maxim Igorevich - Все права защищены.
+    <footer class="bg-light text-center text-lg-start mt-5 py-3 shadow-sm">
+        <div class="container">
+            <p class="mb-0">© {{ current_year }} Dupley Maxim Igorevich - Все права защищены.</p>
         </div>
     </footer>
 
     <!-- Подключение JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-3ed/ndlO15c0wEACbXwcuG+4I/1y7NBGdZg5V3U5SO0=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-    <!-- Автоудаление флэш-сообщений через 5 секунд -->
+    <!-- Автоудаление флэш-сообщений -->
     <script>
-        setTimeout(function() {
-            let alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-                alert.classList.add('fade');
-            });
-        }, 5000); // 5 секунд
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => alert.classList.add('fade-out'));
+        }, 5000);
     </script>
 
     <!-- Скрипт для изменения темы -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
             const currentTheme = localStorage.getItem('theme') || 'theme-white';
-            document.body.classList.add(currentTheme);
+            document.body.className = currentTheme;
 
             window.changeTheme = (theme) => {
                 document.body.className = theme;
@@ -132,50 +124,13 @@
 
     <!-- CSS для тем -->
     <style>
-        .theme-white {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .theme-dark {
-            background-color: #121212;
-            color: #ffffff;
-        }
-
-        .theme-purple {
-            background-color: #6a0dad;
-            color: #ffffff;
-        }
-
-        .theme-orange {
-            background-color: #ff4500;
-            color: #ffffff;
-        }
-
-        .theme-lightblue {
-            background-color: #add8e6;
-            color: #000000;
-        }
-
-        .theme-blue {
-            background-color: #0000ff;
-            color: #ffffff;
-        }
-
-        /* Закругление углов фотографий */
-        img {
-            border-radius: 15px;
-        }
-
-        /* Анимации */
-        .animated-photo {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .animated-photo:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
+        .theme-white { background-color: #ffffff; color: #000000; }
+        .theme-dark { background-color: #121212; color: #ffffff; }
+        .theme-purple { background-color: #6a0dad; color: #ffffff; }
+        .theme-orange { background-color: #ff4500; color: #ffffff; }
+        .theme-lightblue { background-color: #add8e6; color: #000000; }
+        .theme-blue { background-color: #0000ff; color: #ffffff; }
+        .fade-out { opacity: 0; transition: opacity 1s ease-in-out; }
     </style>
 </body>
 </html>
