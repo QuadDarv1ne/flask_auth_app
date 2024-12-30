@@ -2,15 +2,15 @@
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-<div class="card mt-4">
+<div class="card mx-auto mt-5 shadow-lg" style="max-width: 400px;">
     <div class="card-body">
-        <h2 class="card-title">Вход</h2>
+        <h2 class="card-title text-center mb-4">Вход</h2>
         <form method="POST">
             <!-- CSRF Token -->
             {{ form.hidden_tag() }}
             
             <!-- Поле для ввода email -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control") }}
                 {% if form.email.errors %}
@@ -23,7 +23,7 @@
             </div>
             
             <!-- Поле для ввода пароля -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.password.label(class="form-label") }}
                 {{ form.password(class="form-control") }}
                 {% if form.password.errors %}
@@ -36,16 +36,18 @@
             </div>
             
             <!-- Флажок "Запомнить меня" -->
-            <div class="form-group form-check">
+            <div class="form-group form-check mb-3">
                 {{ form.remember(class="form-check-input") }}
                 {{ form.remember.label(class="form-check-label") }}
             </div>
             
             <!-- Кнопка входа -->
-            <button type="submit" class="btn btn-primary">Войти</button>
+            <button type="submit" class="btn btn-primary w-100 mb-3">Войти</button>
             
             <!-- Ссылка на страницу сброса пароля -->
-            <a class="btn btn-link" href="{{ url_for('auth.reset_request') }}">Забыли пароль?</a>
+            <div class="text-center">
+                <a class="btn btn-link" href="{{ url_for('auth.reset_request') }}">Забыли пароль?</a>
+            </div>
         </form>
     </div>
 </div>

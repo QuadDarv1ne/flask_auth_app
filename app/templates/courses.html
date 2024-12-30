@@ -8,61 +8,65 @@
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
-            </div>
-        {% endfor %}
+        <div class="mb-4">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 {% endwith %}
 
 <!-- Courses Grid -->
-<div class="row">
+<div class="row g-4">
     {% for course in courses %}
-    <div class="col-md-4 col-sm-6 mb-4">
-        <div class="card h-100 shadow-sm">
-            <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="Курс {{ course.title }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ course.title }}</h5>
-                <p class="card-text">{{ course.description }}</p>
-                <p class="card-text"><strong>Цена: {{ course.price if course.price else "Бесплатно" }}₽</strong></p>
-            </div>
-            <div class="card-footer d-flex justify-content-between">
-                {% if course.details %}
-                    <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">Подробнее</button>
-                {% endif %}
-                {% if current_user.is_authenticated %}
-                    <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" class="d-inline">
-                        {{ csrf_token() }}
-                        <button type="submit" class="btn btn-primary btn-sm">Добавить в избранное</button>
-                    </form>
-                {% else %}
-                    <p class="text-muted small">Чтобы добавлять курсы в избранное, <a href="{{ url_for('auth.login') }}">войдите</a>.</p>
-                {% endif %}
+        <div class="col-md-4 col-sm-6">
+            <div class="card h-100 shadow-sm border-light">
+                <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="Курс {{ course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description }}</p>
+                    <p class="card-text">
+                        <strong>Цена: {{ course.price or "Бесплатно" }}₽</strong>
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    {% if course.details %}
+                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">Подробнее</button>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}
+                        <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" class="d-inline">
+                            {{ csrf_token() }}
+                            <button type="submit" class="btn btn-primary btn-sm">Добавить в избранное</button>
+                        </form>
+                    {% else %}
+                        <p class="text-muted small">Чтобы добавлять курсы в избранное, <a href="{{ url_for('auth.login') }}">войдите</a>.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
     {% endfor %}
 </div>
 
 <!-- Course Modals -->
 {% for course in courses %}
-<div class="modal fade" id="courseModal{{ course.id }}" tabindex="-1" aria-labelledby="courseModalLabel{{ course.id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>{{ course.details }}</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+    <div class="modal fade" id="courseModal{{ course.id }}" tabindex="-1" aria-labelledby="courseModalLabel{{ course.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ course.details }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 {% endfor %}
 {% endblock %}

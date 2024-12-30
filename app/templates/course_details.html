@@ -1,36 +1,41 @@
 {% extends "layouts/base.html" %}
+
 {% block title %}{{ course.title }}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="card shadow">
+    <div class="card shadow-lg border-light">
         <div class="card-body">
             <h1 class="card-title text-center">{{ course.title }}</h1>
             <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top my-4" alt="Изображение курса {{ course.title }}">
 
+            <!-- Описание курса -->
             <div class="mb-4">
                 <h5 class="card-subtitle mb-2 text-muted">Описание</h5>
                 <p class="card-text">{{ course.description }}</p>
             </div>
 
+            <!-- Детали курса -->
             <div class="mb-4">
                 <h5 class="card-subtitle mb-2 text-muted">Детали курса</h5>
                 <p class="card-text">{{ course.details }}</p>
             </div>
 
+            <!-- Цена курса -->
             <div class="mb-4">
                 <h5 class="card-subtitle mb-2 text-muted">Цена</h5>
                 <p class="card-text">
                     <strong>
-                        {{ course.price if course.price else "Бесплатно" }}
+                        {{ course.price if course.price else "Бесплатно" }}₽
                     </strong>
                 </p>
             </div>
 
+            <!-- Добавление в избранное -->
             {% if current_user.is_authenticated %}
-                <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" style="display:inline;">
-                    {{ form.hidden_tag() }} <!-- CSRF protection -->
-                    <button type="submit" class="btn btn-primary">Добавить в избранное</button>
+                <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" class="d-inline">
+                    {{ form.hidden_tag() }} <!-- CSRF защита -->
+                    <button type="submit" class="btn btn-primary btn-lg">Добавить в избранное</button>
                 </form>
             {% else %}
                 <p class="alert alert-warning text-center">
@@ -40,8 +45,9 @@
         </div>
     </div>
 
+    <!-- Кнопка возврата -->
     <div class="text-center mt-4">
-        <a href="{{ url_for('courses.all_courses') }}" class="btn btn-secondary">Вернуться к курсам</a>
+        <a href="{{ url_for('courses.all_courses') }}" class="btn btn-secondary btn-lg">Вернуться к курсам</a>
     </div>
 </div>
 {% endblock %}

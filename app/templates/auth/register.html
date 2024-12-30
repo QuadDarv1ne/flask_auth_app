@@ -1,17 +1,18 @@
 {% extends "layouts/base.html" %}
+
 {% block title %}Регистрация{% endblock %}
 
 {% block content %}
-<div class="card mt-4">
+<div class="card mx-auto mt-5 shadow-lg" style="max-width: 500px;">
     <div class="card-body">
-        <h2 class="card-title">Регистрация</h2>
-        <form method="POST" enctype="multipart/form-data">  <!-- Добавлен enctype для загрузки файлов -->
+        <h2 class="card-title text-center mb-4">Регистрация</h2>
+        <form method="POST" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
             
             <!-- Поле для ввода имени пользователя -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.username.label(class="form-label") }}
-                {{ form.username(class="form-control") }}
+                {{ form.username(class="form-control form-control-lg") }}
                 {% if form.username.errors %}
                     <div class="text-danger">
                         {% for error in form.username.errors %}
@@ -22,9 +23,9 @@
             </div>
             
             <!-- Поле для ввода email -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-control") }}
+                {{ form.email(class="form-control form-control-lg") }}
                 {% if form.email.errors %}
                     <div class="text-danger">
                         {% for error in form.email.errors %}
@@ -35,9 +36,9 @@
             </div>
             
             <!-- Поле для ввода пароля -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.password.label(class="form-label") }}
-                {{ form.password(class="form-control") }}
+                {{ form.password(class="form-control form-control-lg") }}
                 {% if form.password.errors %}
                     <div class="text-danger">
                         {% for error in form.password.errors %}
@@ -48,9 +49,9 @@
             </div>
             
             <!-- Поле для подтверждения пароля -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.confirm_password.label(class="form-label") }}
-                {{ form.confirm_password(class="form-control") }}
+                {{ form.confirm_password(class="form-control form-control-lg") }}
                 {% if form.confirm_password.errors %}
                     <div class="text-danger">
                         {% for error in form.confirm_password.errors %}
@@ -61,7 +62,7 @@
             </div>
             
             <!-- Поле для загрузки фото профиля -->
-            <div class="form-group">
+            <div class="form-group mb-3">
                 {{ form.profile_picture.label(class="form-label") }}
                 {{ form.profile_picture(class="form-control-file") }}
                 {% if form.profile_picture.errors %}
@@ -74,7 +75,12 @@
             </div>
             
             <!-- Кнопка регистрации -->
-            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            <button type="submit" class="btn btn-primary w-100 mb-3 btn-lg">Зарегистрироваться</button>
+
+            <!-- Ссылка на страницу входа -->
+            <div class="text-center">
+                <p>Уже есть аккаунт? <a href="{{ url_for('auth.login') }}">Войти</a></p>
+            </div>
         </form>
     </div>
 </div>

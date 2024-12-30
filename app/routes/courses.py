@@ -5,19 +5,23 @@ from app.models import Course, FavoriteCourse
 import logging
 
 courses_bp = Blueprint('courses', __name__)
-
 logger = logging.getLogger(__name__)
 
+
+# Роут для отображения всех курсов
 @courses_bp.route('/courses')
 def list_courses():
     try:
         courses = Course.query.all()
+        logger.info(f"Fetched {len(courses)} courses.")  # Логирование количества курсов
         return render_template('courses.html', courses=courses)
     except Exception as e:
         logger.error(f"Error fetching courses: {e}")
         flash('Ошибка при получении списка курсов. Попробуйте снова.', 'danger')
         return redirect(url_for('main.home'))
 
+
+# Роут для отображения деталей курса
 @courses_bp.route('/courses/<int:course_id>')
 def course_details(course_id):
     try:
@@ -28,28 +32,36 @@ def course_details(course_id):
         flash('Ошибка при получении деталей курса. Попробуйте снова.', 'danger')
         return redirect(url_for('courses.list_courses'))
 
+
+# Роут для добавления курса в избранное
 @courses_bp.route('/add_to_favorites/<int:course_id>', methods=['POST'])
 @login_required
 def add_to_favorites(course_id):
     try:
-        if not FavoriteCourse.query.filter_by(user_id=current_user.id, course_id=course_id).first():
+        # Проверка, есть ли курс уже в избранном
+        favorite_exists = FavoriteCourse.query.filter_by(user_id=current_user.id, course_id=course_id).first()
+        
+        if favorite_exists:
+            flash('Курс уже в избранном.', 'info')
+        else:
             favorite = FavoriteCourse(user_id=current_user.id, course_id=course_id)
             db.session.add(favorite)
             db.session.commit()
             flash('Курс добавлен в избранное.', 'success')
-        else:
-            flash('Курс уже в избранном.', 'info')
+            logger.info(f"User {current_user.id} added course {course_id} to favorites.")
     except Exception as e:
         db.session.rollback()
         logger.error(f"Error adding course {course_id} to favorites for user {current_user.id}: {e}")
         flash('Ошибка при добавлении в избранное. Попробуйте снова.', 'danger')
     return redirect(url_for('courses.list_courses'))
 
+
+# Роут для отображения популярных курсов
 @courses_bp.route('/popular_courses')
 def popular_courses():
     try:
         # Примерный список популярных курсов, замените на реальную логику
-        course_ids = [1, 2, 3]
+        course_ids = [1, 2, 3]  # Это пример, замените на реальные популярные курсы
         courses = Course.query.filter(Course.id.in_(course_ids)).all()
         return render_template('courses.html', courses=courses)
     except Exception as e:
