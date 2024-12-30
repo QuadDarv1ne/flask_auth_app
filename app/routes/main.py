@@ -28,3 +28,11 @@ def profile():
     except Exception as e:
         logger.error(f"Ошибка при загрузке страницы профиля: {e}")
         return render_template('errors/500.html', error_message=str(e)), 500
+
+@main_bp.route('/vk_video')
+def video():
+    try:
+        return render_template('vk_video.html')  # Рендерим страницу с видео
+    except Exception as e:
+        logger.error(f"Ошибка при загрузке страницы с видео: {e}")
+        return render_template('errors/500.html', error_message=str(e)), 500
