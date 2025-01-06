@@ -158,6 +158,17 @@
         .btn-custom:hover {
             background-color: #0056b3;
         }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            .theme-toggle {
+                width: 50px;
+                height: 50px;
+            }
+        }
     </style>
 </head>
 
@@ -228,10 +239,38 @@
     <a href="#" data-theme="theme-purple">Фиолетовая тема</a>
 </div>
 
-<!-- Футер -->
-<footer class="footer py-3">
+<!-- Футер с дополнительными разделами -->
+<footer class="footer py-4 mt-5 bg-dark text-white">
     <div class="container">
-        <span>© 2024 Dupley Maxim Igorevich | Все права защищены</span>
+        <div class="row">
+            <div class="col-md-5">
+                <h5>О компании</h5>
+                <p>Мы — команда энтузиастов, которая создает инновационные онлайн-курсы, ориентированные на развитие навыков в области программирования, алгоритмов и подготовки к олимпиадам.</p>
+                <p>Наши курсы обеспечивают глубокие знания и практические навыки, которые помогут вам достигнуть успеха в мире технологий.</p>
+                <p>Мы предлагаем доступ к качественным образовательным ресурсам и материалам, которые подходят как для новичков, так и для опытных специалистов.</p>
+                <p>Присоединяйтесь к нам, чтобы развиваться и расти вместе с лучшими специалистами в своей области.</p>
+            </div>
+            <div class="col-md-3">
+                <h5>Контакты</h5>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-envelope me-2"></i><a href="mailto:support@maestro7it.ru" class="text-white">support@maestro7it.ru</a></li>
+                    <li><i class="fas fa-phone-alt me-2"></i><a href="tel:+7-915-048-02-49" class="text-white">+7-915-048-02-49</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h5>Социальные сети</h5>
+                <div>
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="text-center mt-3">
+        <span>&copy; 2025 Dupley Maxim Igorevich | Все права защищены ® TM</span>
     </div>
 </footer>
 

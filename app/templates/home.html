@@ -3,6 +3,7 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
+<!-- Заголовок с баннером -->
 <div class="jumbotron text-center bg-info text-white p-5">
     <h1 class="display-4">Добро пожаловать в Flask Auth App</h1>
     <p class="lead">Это приложение для авторизации, регистрации и управления профилем пользователя с использованием Flask.</p>
@@ -49,36 +50,19 @@
 
 <!-- Custom CSS для карусели -->
 <style>
-    /* Мобильные устройства */
-    @media (max-width: 576px) {
-        #courseCarousel img {
-            max-height: 200px;
-            object-fit: cover;
-        }
+    /* Стили для изображения в карусели */
+    #courseCarousel img {
+        object-fit: cover;
+        max-height: 450px;
     }
 
-    /* Планшеты */
-    @media (min-width: 577px) and (max-width: 992px) {
-        #courseCarousel img {
-            max-height: 300px;
-            object-fit: cover;
-        }
-    }
-
-    /* Десктопы */
-    @media (min-width: 993px) {
-        #courseCarousel img {
-            max-height: 400px;
-            object-fit: cover;
-        }
-    }
-
+    /* Стиль для стрелок карусели */
     .custom-carousel-control {
-        background-color: orange;
-        border: 2px solid blue;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: 2px solid #007bff;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -181,5 +165,4 @@
         {% endif %}
     </div>
 </div>
-
 {% endblock %}
