@@ -13,14 +13,15 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="{{ url_for('profile.user_profile') }}">Мой профиль</a>
         <a class="navbar-brand" href="{{ url_for('courses.list_courses') }}">Курсы</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-
                 {% if current_user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.logout') }}">Выход</a>
                 </li>
-
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('auth.login') }}">Вход</a>
@@ -33,7 +34,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container mt-4">
         {% block content %}
         {% endblock %}
     </div>

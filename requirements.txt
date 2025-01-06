@@ -6,3 +6,8 @@ Flask-Login
 Flask-Mail
 Flask-Migrate
 python-dotenv
+Flask-Caching
+Flask-CORS
+Flask-RESTful
+Flask-JWT-Extended
+Flask-SocketIO

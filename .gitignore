@@ -1,4 +1,163 @@
-__pycache__
+# Файл .gitignore для проекта на Python
 
-venv
-.idea
+# Этот файл содержит список файлов и директорий, которые должны быть проигнорированы системой контроля версий Git.
+
+# Секции:
+# 1. Скомпилированные байт-коды / оптимизированные / DLL файлы
+# 2. C расширения
+# 3. Файлы для дистрибуции / упаковки
+# 4. PyInstaller файлы
+# 5. Логи установщика
+# 6. Отчеты о тестировании / покрытии
+# 7. Файлы переводов
+# 8. Django файлы
+# 9. Flask файлы
+# 10. Scrapy файлы
+# 11. Документация Sphinx
+# 12. PyBuilder файлы
+# 13. Jupyter Notebook файлы
+# 14. IPython файлы
+# 15. pyenv файлы
+# 16. Файл расписания celery beat
+# 17. SageMath файлы
+# 18. Файлы окружений
+# 19. Настройки проекта Spyder
+# 20. Настройки проекта Rope
+# 21. Документация mkdocs
+# 22. mypy файлы
+# 23. Pyre type checker файлы
+# 24. Файлы IDE и редакторов
+
+# Сертификаты
+certificate/
+*.crt
+*.key
+
+# Скомпилированные байт-коды / оптимизированные / DLL файлы
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C расширения
+*.so
+
+# Файлы для дистрибуции / упаковки
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller файлы
+# Обычно эти файлы создаются python-скриптом из шаблона
+# перед сборкой exe с помощью PyInstaller, чтобы внедрить дату/другую информацию в него.
+*.manifest
+*.spec
+
+# Логи установщика
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Отчеты о тестировании / покрытии
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Файлы переводов
+*.mo
+*.pot
+
+# Django файлы:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask файлы:
+instance/
+.webassets-cache
+
+# Scrapy файлы:
+.scrapy
+
+# Документация Sphinx
+docs/_build/
+
+# PyBuilder файлы
+target/
+
+# Jupyter Notebook файлы
+.ipynb_checkpoints
+
+# IPython файлы
+profile_default/
+ipython_config.py
+
+# pyenv файлы
+.python-version
+
+# Файл расписания celery beat
+celerybeat-schedule
+
+# SageMath файлы
+*.sage.py
+
+# Файлы окружений
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Настройки проекта Spyder
+.spyderproject
+.spyproject
+
+# Настройки проекта Rope
+.ropeproject
+
+# Документация mkdocs
+/site
+
+# mypy файлы
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker файлы
+.pyre/
+
+# Файлы IDE и редакторов
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Конец файла

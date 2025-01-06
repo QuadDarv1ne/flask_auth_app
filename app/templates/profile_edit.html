@@ -6,14 +6,15 @@
     <form method="POST">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control") }}
+            {{ form.username.label(class="form-label", aria_label="Username") }}
+            {{ form.username(class="form-control", placeholder="Enter your username", required=True) }}
         </div>
         <div class="form-group">
-            {{ form.email.label(class="form-label") }}
-            {{ form.email(class="form-control") }}
+            {{ form.email.label(class="form-label", aria_label="Email") }}
+            {{ form.email(class="form-control", placeholder="Enter your email", type="email", required=True) }}
         </div>
         <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="{{ url_for('main.profile') }}" class="btn btn-secondary">Отмена</a>
     </form>
 </div>
 {% endblock %}

@@ -5,6 +5,7 @@
     height: 200px;
     object-fit: cover;
     border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
 /* Общие стили для карточек */
@@ -15,12 +16,12 @@
     margin: 15px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease-in-out;
 }
 
 .card:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Стили для кнопок */
@@ -28,7 +29,7 @@
     border-radius: 5px;
     padding: 10px 15px;
     text-align: center;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .btn-primary {
@@ -39,17 +40,26 @@
 .btn-primary:hover {
     background-color: #0056b3;
     border-color: #004085;
+    transform: scale(1.05); /* Легкое увеличение при наведении */
+}
+
+/* Добавляем фокус для кнопок */
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px rgba(38, 143, 255, 0.5);
 }
 
 /* Стили для заголовков и текста */
 .card h2 {
     font-size: 1.5rem;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 
 .card p {
     font-size: 1rem;
     color: #555;
+    line-height: 1.5;
 }
 
 /* Стили для QR-кодов на видео-платформы */
@@ -59,21 +69,32 @@
 }
 
 .animated-photo {
-    width: auto; /* фиксированная ширина */
-    height: auto; /* автоматическая высота для сохранения пропорций */
+    width: 100%; /* Теперь изображения автоматически занимают доступное пространство */
+    height: auto; /* Сохранение пропорций */
     transition: transform 0.5s ease, opacity 0.5s ease;
 }
-
 
 .photo-container:hover .animated-photo {
     transform: scale(1.15);
     opacity: 0.5;
 }
 
-.btn-primary {
-    background-color: #007bff;
-}
+/* Адаптивность */
+@media (max-width: 768px) {
+    .card {
+        margin: 10px;
+        padding: 12px;
+    }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+    .card-img-top {
+        height: 150px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .photo-container {
+        margin-bottom: 20px;
+    }
 }

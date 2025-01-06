@@ -1,29 +1,29 @@
 {% extends "layouts/base.html" %}
+
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<div class="jumbotron text-center">
+<div class="jumbotron text-center bg-info text-white p-5">
     <h1 class="display-4">Добро пожаловать в Flask Auth App</h1>
     <p class="lead">Это приложение для авторизации, регистрации и управления профилем пользователя с использованием Flask.</p>
 </div>
 
 <!-- Карусель с фотографиями курсов -->
-<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="courseCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
     <div class="carousel-indicators">
-        {% for banner in banners %}
-        <button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="true" aria-label="Слайд {{ loop.index }}"></button>
-        {% endfor %}
-    </div>
-
-    <div class="carousel-inner">
         {% set banners = [
             {'img': 'banner_1.jpg', 'title': 'Курс 1', 'desc': 'Описание курса 1'},
             {'img': 'banner_2.jpg', 'title': 'Курс 2', 'desc': 'Описание курса 2'},
             {'img': 'banner_3.jpg', 'title': 'Курс 3', 'desc': 'Описание курса 3'}
         ] %}
         {% for banner in banners %}
+        <button type="button" data-bs-target="#courseCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="true" aria-label="Слайд {{ loop.index }}"></button>
+        {% endfor %}
+    </div>
+
+    <div class="carousel-inner">
+        {% for banner in banners %}
         <div class="carousel-item {% if loop.first %}active{% endif %}">
-            <!-- Мобильные устройства загружают уменьшенную версию изображений -->
             <picture>
                 <source media="(max-width: 576px)" srcset="{{ url_for('static', filename='images/mobile/' ~ banner.img) }}">
                 <source media="(min-width: 577px)" srcset="{{ url_for('static', filename='images/' ~ banner.img) }}">
@@ -37,19 +37,19 @@
         {% endfor %}
     </div>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
+    <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#courseCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Предыдущий</span>
+        <span class="visually-hidden">Предыдущий</span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
+    <button class="carousel-control-next custom-carousel-control" type="button" data-bs-target="#courseCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Следующий</span>
+        <span class="visually-hidden">Следующий</span>
     </button>
 </div>
 
-<!-- Custom CSS -->
+<!-- Custom CSS для карусели -->
 <style>
-    /* Для мобильных устройств изображения могут быть меньше */
+    /* Мобильные устройства */
     @media (max-width: 576px) {
         #courseCarousel img {
             max-height: 200px;
@@ -57,7 +57,7 @@
         }
     }
 
-    /* Для планшетов */
+    /* Планшеты */
     @media (min-width: 577px) and (max-width: 992px) {
         #courseCarousel img {
             max-height: 300px;
@@ -65,15 +65,31 @@
         }
     }
 
-    /* Для десктопов */
-    @media (min-width: auto) {
+    /* Десктопы */
+    @media (min-width: 993px) {
         #courseCarousel img {
             max-height: 400px;
             object-fit: cover;
         }
     }
-</style>
 
+    .custom-carousel-control {
+        background-color: orange;
+        border: 2px solid blue;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+</style>
 
 <!-- Раздел с видео -->
 <div class="mt-5">
@@ -81,7 +97,7 @@
     <div class="row">
         {% for i in range(1, 4) %}
         <div class="col-md-4">
-            <div class="video-container">
+            <div class="video-container mb-4">
                 <select class="form-select mb-2" aria-label="Выбор платформы" onchange="changeVideo(this, 'video{{ i }}')">
                     <option selected>Выберите платформу</option>
                     <option value="plvideo">Plvideo</option>
@@ -95,6 +111,7 @@
     </div>
 </div>
 
+<!-- Скрипт для смены видео -->
 <script>
     const videoUrls = {
         'plvideo': ['https://plvideo.ru/embed/73d8U_R6GJqY', 'https://plvideo.ru/embed/pDzyqns0UbE6', 'https://plvideo.ru/embed/cnuvJHabNvN1'],
@@ -129,8 +146,8 @@
     <div class="row">
         {% if courses %}
             {% for course in courses %}
-            <div class="col-md-4">
-                <div class="card">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
                     <img src="{{ url_for('static', filename='images/' ~ course.image) }}" class="card-img-top" alt="{{ course.title }}" loading="lazy">
                     <div class="card-body">
                         <h5 class="card-title">{{ course.title }}</h5>

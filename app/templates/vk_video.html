@@ -1,0 +1,104 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Видео ВКонтакте и YouTube{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 text-center display-4 text-primary">Видео ВКонтакте и YouTube</h1>
+
+<div class="container">
+    <!-- Видео ВКонтакте (клипы) -->
+    <div class="row">
+        {% for video in [
+            {'id': '456241512', 'title': 'Клип 1', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241511', 'title': 'Клип 2', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241510', 'title': 'Клип 3', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241506', 'title': 'Клип 4', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241505', 'title': 'Клип 5', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241504', 'title': 'Клип 6', 'thumbnail': 'https://via.placeholder.com/325x200'}
+        ] %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-lg" style="transition: transform 0.3s ease-in-out;">
+                <img src="{{ video.thumbnail }}" class="card-img-top" alt="{{ video.title }} Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{ video.title }}</h5>
+                    <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#videoModal{{ video.id }}">
+                        Смотреть видео
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для видео -->
+        <div class="modal fade" id="videoModal{{ video.id }}" tabindex="-1" aria-labelledby="videoModalLabel{{ video.id }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="videoModalLabel{{ video.id }}">{{ video.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe src="https://vk.com/video_ext.php?oid=-183207497&id={{ video.id }}&hd=2&autoplay=1"
+                                width="100%" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Видео ВКонтакте (полноценные) -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm rounded-lg">
+                <iframe src="https://vkvideo.ru/video_ext.php?oid=-183207497&id=456241513&hd=2&autoplay=1" 
+                        width="100%" height="480" allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" 
+                        frameborder="0" allowfullscreen></iframe>
+                <div class="card-body">
+                    <h5 class="card-title text-center">Полноценное видео ВКонтакте</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Видео YouTube -->
+    <div class="row">
+        {% for youtube_video in [
+            {'src': 'https://www.youtube.com/embed/ajfyBPotcmM', 'title': 'YouTube Видео 1'},
+            {'src': 'https://www.youtube.com/embed/HTQOacZwdJY', 'title': 'YouTube Видео 2'},
+            {'src': 'https://www.youtube.com/embed/xLcDH3E1V4c', 'title': 'YouTube Видео 3'},
+            {'src': 'https://www.youtube.com/embed/4f4anaEe4Zo', 'title': 'YouTube Видео 4'}
+        ] %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm rounded-lg" style="transition: transform 0.3s ease-in-out;">
+                <img src="https://via.placeholder.com/325x200" class="card-img-top" alt="{{ youtube_video.title }} Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title text-center">{{ youtube_video.title }}</h5>
+                    <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#youtubeModal{{ loop.index }}">
+                        Смотреть видео
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно для YouTube -->
+        <div class="modal fade" id="youtubeModal{{ loop.index }}" tabindex="-1" aria-labelledby="youtubeModalLabel{{ loop.index }}" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="youtubeModalLabel{{ loop.index }}">{{ youtube_video.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe width="100%" height="480" src="{{ youtube_video.src }}" 
+                                allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" 
+                                frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
