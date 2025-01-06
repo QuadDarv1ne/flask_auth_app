@@ -7,22 +7,26 @@
 
 <div class="container">
     <!-- Видео ВКонтакте (клипы) -->
-    <div class="row">
+    <div class="row mb-4">
         {% for video in [
             {'id': '456241512', 'title': 'Клип 1', 'thumbnail': 'https://via.placeholder.com/325x200'},
             {'id': '456241511', 'title': 'Клип 2', 'thumbnail': 'https://via.placeholder.com/325x200'},
             {'id': '456241510', 'title': 'Клип 3', 'thumbnail': 'https://via.placeholder.com/325x200'},
             {'id': '456241506', 'title': 'Клип 4', 'thumbnail': 'https://via.placeholder.com/325x200'},
             {'id': '456241505', 'title': 'Клип 5', 'thumbnail': 'https://via.placeholder.com/325x200'},
-            {'id': '456241504', 'title': 'Клип 6', 'thumbnail': 'https://via.placeholder.com/325x200'}
+            {'id': '456241504', 'title': 'Клип 6', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241503', 'title': 'Клип 7', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241502', 'title': 'Клип 8', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241501', 'title': 'Клип 9', 'thumbnail': 'https://via.placeholder.com/325x200'},
+            {'id': '456241500', 'title': 'Клип 10', 'thumbnail': 'https://via.placeholder.com/325x200'}
         ] %}
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm rounded-lg" style="transition: transform 0.3s ease-in-out;">
-                <img src="{{ video.thumbnail }}" class="card-img-top" alt="{{ video.title }} Thumbnail">
+                <img src="{{ video.thumbnail }}" class="card-img-top img-fluid" alt="{{ video.title }} Thumbnail" loading="lazy">
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ video.title }}</h5>
                     <button class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#videoModal{{ video.id }}">
-                        Смотреть видео
+                        <i class="bi bi-play-circle"></i> Смотреть видео
                     </button>
                 </div>
             </div>
@@ -62,20 +66,26 @@
     </div>
 
     <!-- Видео YouTube -->
-    <div class="row">
+    <div class="row mb-4">
         {% for youtube_video in [
             {'src': 'https://www.youtube.com/embed/ajfyBPotcmM', 'title': 'YouTube Видео 1'},
             {'src': 'https://www.youtube.com/embed/HTQOacZwdJY', 'title': 'YouTube Видео 2'},
             {'src': 'https://www.youtube.com/embed/xLcDH3E1V4c', 'title': 'YouTube Видео 3'},
-            {'src': 'https://www.youtube.com/embed/4f4anaEe4Zo', 'title': 'YouTube Видео 4'}
+            {'src': 'https://www.youtube.com/embed/4f4anaEe4Zo', 'title': 'YouTube Видео 4'},
+            {'src': 'https://www.youtube.com/embed/sVtHGvFjB8w', 'title': 'YouTube Видео 5'},
+            {'src': 'https://www.youtube.com/embed/dQw4w9WgXcQ', 'title': 'YouTube Видео 6'},
+            {'src': 'https://www.youtube.com/embed/Kqv_J4Ml7gM', 'title': 'YouTube Видео 7'},
+            {'src': 'https://www.youtube.com/embed/V2gR02IRXv8', 'title': 'YouTube Видео 8'},
+            {'src': 'https://www.youtube.com/embed/l9nhQcb6V5A', 'title': 'YouTube Видео 9'},
+            {'src': 'https://www.youtube.com/embed/fTysYLOc9W8', 'title': 'YouTube Видео 10'}
         ] %}
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm rounded-lg" style="transition: transform 0.3s ease-in-out;">
-                <img src="https://via.placeholder.com/325x200" class="card-img-top" alt="{{ youtube_video.title }} Thumbnail">
+                <img src="https://via.placeholder.com/325x200" class="card-img-top img-fluid" alt="{{ youtube_video.title }} Thumbnail" loading="lazy">
                 <div class="card-body">
                     <h5 class="card-title text-center">{{ youtube_video.title }}</h5>
                     <button class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#youtubeModal{{ loop.index }}">
-                        Смотреть видео
+                        <i class="bi bi-play-circle"></i> Смотреть видео
                     </button>
                 </div>
             </div>
@@ -101,4 +111,13 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block styles %}
+<style>
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+</style>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Курсы{% endblock %}
 
 {% block content %}
-<h1 class="mb-4 text-center">Курсы</h1>
+<h1 class="mb-4 text-center display-4 text-primary">Курсы</h1>
 
 <!-- Flash Messages -->
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -23,8 +23,8 @@
 <div class="row g-4">
     {% for course in courses %}
         <div class="col-md-4 col-sm-6">
-            <div class="card h-100 shadow-sm border-light">
-                <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="Курс {{ course.title }}">
+            <div class="card h-100 shadow-sm border-light" style="transition: transform 0.3s ease-in-out;">
+                <img src="{{ url_for('static', filename='images/' + course.image) }}" class="card-img-top" alt="Курс {{ course.title }}" loading="lazy">
                 <div class="card-body">
                     <h5 class="card-title">{{ course.title }}</h5>
                     <p class="card-text">{{ course.description }}</p>
@@ -34,12 +34,16 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     {% if course.details %}
-                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">Подробнее</button>
+                        <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#courseModal{{ course.id }}">
+                            <i class="bi bi-info-circle"></i> Подробнее
+                        </button>
                     {% endif %}
                     {% if current_user.is_authenticated %}
                         <form action="{{ url_for('courses.add_to_favorites', course_id=course.id) }}" method="post" class="d-inline">
                             {{ csrf_token() }}
-                            <button type="submit" class="btn btn-primary btn-sm">Добавить в избранное</button>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi bi-heart-fill"></i> Добавить в избранное
+                            </button>
                         </form>
                     {% else %}
                         <p class="text-muted small">Чтобы добавлять курсы в избранное, <a href="{{ url_for('auth.login') }}">войдите</a>.</p>
@@ -57,7 +61,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="courseModalLabel{{ course.id }}">{{ course.title }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
                     <p>{{ course.details }}</p>
@@ -69,4 +73,38 @@
         </div>
     </div>
 {% endfor %}
+
+{% endblock %}
+
+{% block styles %}
+<style>
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(42, 81, 255, 0.562);
+    }
+
+    .btn i {
+        margin-right: 20px;
+    }
+
+    .card-body {
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .card-body:hover {
+        background-color: #f8f9fa;
+    }
+
+    .alert {
+        transition: opacity 0.5s ease;
+    }
+
+    .modal-content {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .modal-content:hover {
+        transform: scale(1.05);
+    }
+</style>
 {% endblock %}
