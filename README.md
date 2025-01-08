@@ -1,8 +1,9 @@
-# Регистрация и авторизация пользователей в личном кабинете [Flask + Boostrap]
+# 🔐 Регистрация и авторизация пользователей в личном кабинете [Flask + Bootstrap]
 
 ![flask](img/flask/flask-user-authentication-intro.gif)
+    
+<img src="img/profile.png" alt="User Profile" style="width: 100%; height: auto;">
 
-![profile](img/profile.png)
 
 ## Описание проекта
 
@@ -108,30 +109,38 @@ venv/ — виртуальное окружение для Python.
 Эта структура легко расширяется для добавления новых страниц, функционала и стилей, а также для последующего перехода на более мощную базу данных, если это потребуется.
 
 ## Авторизация пользователя
+
 ![auth](img/auth.png)
 
 ## Регистрация пользователя
+
 ![reg](img/reg.png)
 
 ## Страница с курсами
+
 ![courses](img/courses.png)
 
+## Технологии
 
-## Технологии:
-- **Flask:** Минималистичный веб-фреймворк для создания серверной части приложения.
-![flask](img/flask/flask.jpg)
-- **Bootstrap:** CSS-фреймворк для создания адаптивного и стильного интерфейса.
-![boostrap](img/boostrap/boostrap.png)
-- **SQLite:** Легковесная база данных для хранения информации о пользователях и их профилях.
-![sqlite3](img/sqlite/sqlite3.png)
+- **Flask:** Минималистичный веб-фреймворк для создания серверной части приложения.  
+  <img src="img/flask/flask.jpg" alt="Flask" style="width:60%; height: auto;">
+
+- **Bootstrap:** CSS-фреймворк для создания адаптивного и стильного интерфейса.  
+  <img src="img/boostrap/boostrap.png" alt="Bootstrap" style="width: 60%; height: auto;">
+
+- **SQLite:** Легковесная база данных для хранения информации о пользователях и их профилях.  
+  <img src="img/sqlite/sqlite3.png" alt="SQLite" style="width: 60%; height: auto;">
 
 Этот проект идеально подходит для начинающих разработчиков, желающих изучить основы веб-разработки, а также для тех, кто хочет создать собственную платформу для управления пользовательскими учетными записями.
+
 
 ## Запуск проекта
 
 ```bash
 flask run
 ```
+
+<img src="DupleyMI.png" alt="Dupley Maxim Igorevich" width="300" height="300">
 
 **Автор:** Дуплей Максим Игоревич
 
